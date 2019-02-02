@@ -1,2 +1,2 @@
-# mathematics
-C Library for large number computations
+# Mathematics
+C Library for large number computations.
