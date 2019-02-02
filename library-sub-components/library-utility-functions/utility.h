@@ -63,46 +63,6 @@ void setValueToMathInt( math_int *a ){
     a->digits = lengthOfInputStream + 1; // Assiging the number of digits.
 }
 
-
-void setValueToMathFloat( math_float *a, int type ){
-    //New pointer to access data and temp to delete accessed data from memeory.
-    struct input_stream *new_pointer, *temp;
-
-    char *data;                 //To store data.
-
-    //Memory allocation for data variable.
-    data = (char *)malloc(sizeof(char) * (lengthOfInputStream + 2));
-
-    new_pointer = front;        //Getting the address of first element.
-    int i = 0;                  //Loop control variable.
-
-    //Loop to get data and free memory.
-    while( i <= lengthOfInputStream ){
-        data[i] = new_pointer->c;
-        
-        temp = new_pointer;     //Storing address of current data.
-        new_pointer = new_pointer->link;    //Moving to the next data address.
-    
-        free(temp);      //Delete previous data from memory.
-
-        i++;
-    }
-
-    data[i] = '\0'; //Adding Null at the last of array.
-
-
-    if( type == BEFORE_DECIMAL ){                            //Assign data to before decimal part.
-        a->data_before_decimal = data;                      //Assing data to main variable.
-        a->digits_before_decimal = lengthOfInputStream + 1;  //Assiging the number of digits.
-    }
-
-    else if ( type == AFTER_DECIMAL ){                       //Assign data to after decimal part.
-        a->data_after_decimal = data;                       //Assing data to main variable.
-        a->digits_after_decimal = lengthOfInputStream + 1;   //Assiging the number of digits.
-    }
-    
-}
-
 //---------->>> Function to get MathInt  <<<------------------
 
 void getMathInt( math_int *a ){
@@ -120,7 +80,7 @@ void getMathInt( math_int *a ){
 }
 
 //---------->>> Function to get MathFloat  <<<------------------
-void getMathFloat ( math_float *a ){
+void getMathFloat( math_float *a ){
    initialize();                //Initialize variables.
     
     char c;                     //To extract character form input buffer.
@@ -132,7 +92,7 @@ void getMathFloat ( math_float *a ){
     }
 
     //Set before decimal.
-    setValueToMathFloat( a, BEFORE_DECIMAL );
+    setValueToMathInt( &a->data_before_decimal );
 
     //Reinitialize for data after decimal part;
     initialize();
@@ -144,16 +104,16 @@ void getMathFloat ( math_float *a ){
     }
 
     //Set after decimal part.
-    setValueToMathFloat( a, AFTER_DECIMAL );
+    setValueToMathInt( &a->data_after_decimal );
 
     //Saving the length of the floating number without decimal
-    a->digits = a->digits_before_decimal + a->digits_after_decimal;
+    a->digits = a->data_before_decimal.digits + a->data_after_decimal.digits;
 
     //Allocating the required space for storing the floating number
     a->data = (char *)malloc((sizeof(char) * (a->digits + 2))); 
 
     //Copying the floating number in memory.
-    strcpy(a->data, a->data_before_decimal);
+    strcpy(a->data, a->data_before_decimal.data);
     strcat(a->data, ".");
-    strcat(a->data, a->data_after_decimal);
+    strcat(a->data, a->data_after_decimal.data);
 }
