@@ -1,19 +1,19 @@
-char* allocateMemoryForFactorialFunction( num ){
+char* allocateMemory( len ){
     char *p;
-    int no_of_digits = (int)(num * log10( num/2.0 )) + 2;
-    p = (char *)malloc(sizeof(char) * no_of_digits);
+    p = (char *)malloc(sizeof(char) * len );
     return p;
+}
+
+char* allocateMemoryForFactorialFunction( num ){
+    int no_of_digits = (int)(num * log10( num/2.0 )) + 2;
+    return allocateMemory(no_of_digits);
 }
 
 char* allocateMemoryForPowerFunction( base, power ){
-    char *p;
     int no_of_digits = (int)(power * log10(base)) + 3;
-    p = (char *)malloc(sizeof(char) * no_of_digits);
-    return p;
+    return allocateMemory(no_of_digits);
 }
 
 char* allocateMemoryForAddition( len ){
-    char *p;
-    p = (char *)malloc(sizeof(char) * ( len + 4 ));
-    return p;
+    return allocateMemory(len + 4);
 }

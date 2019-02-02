@@ -1,4 +1,5 @@
-int carry = 0;
+int carry = 0;              //Global variable to store carry bit
+int flag_for_carry = 0;     //Global variable to say whether to add last carry bit or not. Useful for float addition.
 
 math_int intAddition( math_int a, math_int b ){
     
@@ -49,8 +50,8 @@ math_int intAddition( math_int a, math_int b ){
         }
     }
 
-    //Checking if carry is empty or not.
-    if(carry != 0)
+    //Checking if carry is empty or not and flag for carry bit is 0
+    if(carry != 0 && flag_for_carry == 0)
         c.data[i++] = '0' + carry;
     
     c.data[i] = '\0';   //Adding the null character at the last.
@@ -64,19 +65,57 @@ math_int intAddition( math_int a, math_int b ){
     reverseString( b.data, b.digits );
 
     //Resetting Carry
-    carry = 0;
+    if(flag_for_carry == 0)
+        carry = 0;
 
     return c;
 }
 
-// math_ addFloatingValue( char *floating_a, char *floating_b ){
+math_float floatAddition( math_float a, math_float b ){
+    math_float result;
+    math_int data_before_decimal, data_after_decimal, trailing_zero_number;
 
-// }
+    flag_for_carry = 1;
 
-void floatAddition( math_float a, math_float b ){
-    math_int data_before_decimal, data_after_decimal;
+    //First adding the number after decimal.
+    if( a.data_after_decimal.digits > b.data_after_decimal.digits ){
+        trailing_zero_number = addTrailingZero( b.data_after_decimal, a.data_after_decimal.digits );
+        data_after_decimal = intAddition( a.data_after_decimal, trailing_zero_number);
+    }
+
+    else{
+        trailing_zero_number = addTrailingZero( a.data_after_decimal, b.data_after_decimal.digits );
+        data_after_decimal = intAddition( b.data_after_decimal, trailing_zero_number );
+    }
+
+    //Adding the number before decimal
     data_before_decimal = intAddition( a.data_before_decimal, b.data_before_decimal );
 
-    printf("%s", data_before_decimal.data);
-    // return c;
+    //Stroing the number of digit in result.
+    result.digits = data_before_decimal.digits + data_after_decimal.digits;
+
+    //Allocating memory for results variable
+    result.data_before_decimal.data = allocateMemory( data_before_decimal.digits + 1 );
+    result.data_after_decimal.data = allocateMemory( data_after_decimal.digits + 1 );
+    result.data = allocateMemory( result.digits + 1 );
+    
+    // //Updating the value of result.
+    strcpy(result.data_before_decimal.data, data_before_decimal.data);
+    strcpy(result.data_after_decimal.data, data_after_decimal.data);
+    result.data_after_decimal.digits = data_after_decimal.digits;
+    result.data_before_decimal.digits = data_before_decimal.digits;
+
+    // //Copying the floating number in memory.
+    strcpy(result.data, data_before_decimal.data);
+    strcat(result.data, ".");
+    strcat(result.data, data_after_decimal.data);
+
+    //Stroing the number of digit in result.
+    result.digits = data_before_decimal.digits + data_after_decimal.digits;
+
+    //Resetting the value of carry and flag for carry.
+    carry = 0;
+    flag_for_carry = 0;
+
+    return result;
 }

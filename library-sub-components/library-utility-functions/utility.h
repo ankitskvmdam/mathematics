@@ -1,7 +1,9 @@
+//Structure for input stream
 struct input_stream{
     char c;
     struct input_stream *link;
-}*front, *rear;
+}*front, *rear;             //Variable to control the input stream inputs.
+
 
 int lengthOfInputStream;    //To count the length of input stream.
 
@@ -14,6 +16,7 @@ void initialize(){
 
 void addToInputStream( char c ){
     struct input_stream *new_pointer;
+
     //Allocating space with buffer to avoid overflow.
     new_pointer = (struct input_stream *)malloc((sizeof(int) + sizeof(char)) + 2);  
     
@@ -28,8 +31,8 @@ void addToInputStream( char c ){
         return;                     //Return from the function.
     }
 
-    rear->link = new_pointer;
-    rear = new_pointer;
+    rear->link = new_pointer;   //Linking the previous stream bit to next stream bit.
+    rear = new_pointer;         //Moving the rear pointer from previous to current stream bit.
     lengthOfInputStream++;  //Counting input stream length.
 
 }
@@ -56,6 +59,13 @@ void setValueToMathInt( math_int *a ){
         free(temp);      //Delete previous data from memory.
 
         i++;
+    }
+
+    //If there is no num in the input stream the assign 0. This is useful for float.
+    if(lengthOfInputStream == -1){
+        data[i] = '0';
+        i++;
+        lengthOfInputStream++;
     }
 
     data[i] = '\0'; //Adding Null at the last of array.
@@ -97,7 +107,8 @@ void getMathFloat( math_float *a ){
     //Reinitialize for data after decimal part;
     initialize();
 
-    c = getchar();
+    if(c == '.')
+        c = getchar();
     while( c >= '0' && c <= '9' ){
         addToInputStream(c);    //Adding to input stream.
         c = getchar();          //Getting the next element.
@@ -116,4 +127,29 @@ void getMathFloat( math_float *a ){
     strcpy(a->data, a->data_before_decimal.data);
     strcat(a->data, ".");
     strcat(a->data, a->data_after_decimal.data);
+}
+
+
+//-------------->>> Function to add trailing zero for calculation purpose <<<--------------
+math_int addTrailingZero( math_int b, int len ){
+    math_int trailing_zero_number;      //Variable to store trailing zero number.
+    int i;                              //Loop control varialbe.
+
+    //Allocating space for trailing zero number and copying initial value.
+    trailing_zero_number.data = (char *)malloc(sizeof(char) * (len + 3));
+    strcpy(trailing_zero_number.data, b.data);
+    
+    //Loop to copy trailing zero at the end to the desire length.
+    for( i = b.digits; i < len; i++){
+        trailing_zero_number.data[i] = '0';
+    }
+
+    //Add null charater to the end.
+    trailing_zero_number.data[i] = '\0';
+
+    //Setting the length of the trailing zero number
+    trailing_zero_number.digits = len;
+
+    //Returning the new trailing zero number.
+    return trailing_zero_number;
 }
