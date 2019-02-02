@@ -11,3 +11,9 @@ char* allocateMemoryForPowerFunction( base, power ){
     p = (char *)malloc(sizeof(char) * no_of_digits);
     return p;
 }
+
+char* allocateMemoryForAddition( len ){
+    char *p;
+    p = (char *)malloc(sizeof(char) * ( len + 4 ));
+    return p;
+}

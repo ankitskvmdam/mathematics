@@ -1,16 +1,13 @@
 #include "mathematics.h"
 
 int main(void){
-    math_float a;
-    getMathFloat(&a);
-    printf("\nBefore decimal: %s", a.data_before_decimal);
-    printf("\nLength: %d", a.digits_before_decimal);
+    math_int a, b, c;
+    getMathInt(&a);
+    getMathInt(&b);
 
-    printf("\nAfter decimal: %s", a.data_after_decimal);
-    printf("\nLength: %d", a.digits_after_decimal);
+    c = intAddition(a, b);
 
-    printf("\nNumber: %s", a.data);
-    printf("\nLength: %d", a.digits);
+    printf("%s", c.data);
     return 0;
 }
 
