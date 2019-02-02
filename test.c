@@ -8,9 +8,12 @@ int main(void){
 
     // c = intAddition(a, b);
 
-    // printf("%s", c.data);
-    math_float a;
+    // printf("\n%s", c.data);
+    math_int a, b, c;
     getMathFloat(&a);
+    getMathFloat(&b);
+
+    floatAddition(a, b);
     displayFloat(a);
 
     return 0;

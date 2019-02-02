@@ -73,8 +73,10 @@ math_int intAddition( math_int a, math_int b ){
 
 // }
 
-// math_float floatAddition( math_float a, math_float b ){
-//     math_int intermediate;
-//     intermediate = intAddition( a.data_before_decimal, b.data_before_decimal );
-//     return c;
-// }
+void floatAddition( math_float a, math_float b ){
+    math_int data_before_decimal, data_after_decimal;
+    data_before_decimal = intAddition( a.data_before_decimal, b.data_before_decimal );
+
+    printf("%s", data_before_decimal.data);
+    // return c;
+}
