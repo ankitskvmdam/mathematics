@@ -6,5 +6,7 @@ This library is in initial phase. Only few functions are added. Developers are w
 
 # Function Available
 
-1. Addition between two very large number.
-2. Addition between two very large floating number.
+1. Addition between two very large (non-negative) number.
+2. Addition between two very large floating (non-negative) number.
+3. Subtraction between two very large (non-negative) number.
+4. Subtraction between two very large floating (non-negative) number.
