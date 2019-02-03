@@ -69,8 +69,16 @@ void setValueToMathInt( math_int *a ){
     }
 
     data[i] = '\0'; //Adding Null at the last of array.
+    
+    //Reducing the size of the digit if first input stream in - .
+    if(data[0] == '-'){
+        i = lengthOfInputStream = removeLeadingZero(&data[1]) - 1;
+    }
+    else i = lengthOfInputStream = removeLeadingZero(data) - 1;
+
     a->data = data; //Assing data to main variable.
     a->digits = lengthOfInputStream + 1; // Assiging the number of digits.
+    
 }
 
 //---------->>> Function to get MathInt  <<<------------------
@@ -81,6 +89,12 @@ void getMathInt( math_int *a ){
     char c;             //To extract character form input buffer.
 
     c = getchar();
+    
+    if( c == '-' ){
+        addToInputStream(c);    //Adding negative sign to the input stream.
+        c = getchar();          //Getting the next element.
+    }
+
     while( c >= '0' && c <= '9' ){
         addToInputStream(c);    //Adding to input stream.
         c = getchar();          //Getting the next element.
@@ -96,6 +110,12 @@ void getMathFloat( math_float *a ){
     char c;                     //To extract character form input buffer.
 
     c = getchar();
+
+    if( c == '-' ){
+        addToInputStream(c);    //Adding negative sign to the input stream.
+        c = getchar();          //Getting the next element.
+    }
+
     while( c >= '0' && c <= '9' ){
         addToInputStream(c);    //Adding to input stream.
         c = getchar();          //Getting the next element.

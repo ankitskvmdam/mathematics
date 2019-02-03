@@ -1,7 +1,13 @@
-int carry = 0;              //Global variable to store carry bit
-int flag_for_carry = 0;     //Global variable to say whether to add last carry bit or not. Useful for float addition.
+int carry = 0;              //Global variable to store carry
+int flag_for_carry = FALSE;     //Global variable to say whether to add last carry or not. Useful for float addition.
 
-math_int intAddition( math_int a, math_int b ){
+/*
+    NOTE:
+        This function assumes that a is greater than b.
+        Please process the input before calling this function.
+ */
+
+math_int addition( math_int a, math_int b ){
     
     math_int c;         //Variable to store the final result.
     int i;              //Loop control variable.
@@ -11,47 +17,41 @@ math_int intAddition( math_int a, math_int b ){
     reverseString( b.data, b.digits );
 
     //Getting the max and min len so that memory for final integer allocated.
-    int max_len = ( a.digits > b.digits ) ? a.digits : b.digits;
-    int min_len = ( a.digits < b.digits ) ? a.digits : b.digits;
+    int max_len = a.digits;
+    int min_len = b.digits;
 
     //Allocating the memory and pointing to the free space.
     c.data = allocateMemoryForAddition( max_len );
 
-    //Loop to add
+    //Loop to perform addition operation
     for( i = 0; i < min_len; i++){
-        int temp;
+        int unit, unit_a, unit_b;     // unit for storing unit digit sum. unit_a and unit_b store unit place of a and b.
+
+        //Assign negative sign (if encounter) value to 0 so if have no effect on calculation.
+        unit_a = ( a.data[i] != '-' ) ? ( int )( a.data[i] - '0' ) : 0;
+        unit_b = ( b.data[i] != '-' ) ? ( int )( b.data[i] - '0' ) : 0;
 
         //Converting character to integer and adding unit place integer.
-        temp = (int)( a.data[i] - '0' ) + (int)( b.data[i] - '0' );
-        temp = temp + carry;
+        unit = unit_a + unit_b + carry;
 
-        c.data[i] = '0' + (temp % 10);      //Saving the remainder.
-        carry = temp / 10;                  //Carry bit.
+        c.data[i] = '0' + (unit % 10);      //Saving the remainder.
+        carry = unit / 10;                  //Carry bit.
     }
 
     //If given integer are not of same length.
-    if( b.digits == min_len ){              //If first integer has more number of digits.
-        for( ; i < max_len; i++){
-            int temp;
-            temp = (int)( a.data[i] - '0' );
-            temp = temp + carry;
-            c.data[i] = '0' + (temp % 10);
-            carry = temp / 10;
-        }
-    }
+    for( ; i < max_len; i++){
+        int unit;
+        
+        //Assign negative sign (if encounter) value to 0 so if have no effect on calculation.
+        unit = ( a.data[i] != '-' ) ? ( int )( a.data[i] - '0' ) : 0;
 
-    else{
-        for( ; i < max_len; i++){          //If second integer has more number of digits.
-            int temp;
-            temp = (int)( b.data[i] - '0' );
-            temp = temp + carry;
-            c.data[i] = '0' + (temp % 10);
-            carry = temp / 10;
-        }
+        unit = unit + carry;
+        c.data[i] = '0' + (unit % 10);
+        carry = unit / 10;
     }
 
     //Checking if carry is empty or not and flag for carry bit is 0
-    if(carry != 0 && flag_for_carry == 0)
+    if(carry != 0 && flag_for_carry == FALSE)
         c.data[i++] = '0' + carry;
     
     c.data[i] = '\0';   //Adding the null character at the last.
@@ -65,17 +65,31 @@ math_int intAddition( math_int a, math_int b ){
     reverseString( b.data, b.digits );
 
     //Resetting Carry
-    if(flag_for_carry == 0)
+    if(flag_for_carry == FALSE)
         carry = 0;
 
     return c;
+}
+
+//First process the integer and the perform addition
+math_int intAddition( math_int a, math_int b){
+
+    if(a.digits > b.digits){
+
+        return (addition(a, b));
+    }
+
+    else{
+
+        return (addition(b, a));
+    }
 }
 
 math_float floatAddition( math_float a, math_float b ){
     math_float result;
     math_int data_before_decimal, data_after_decimal, trailing_zero_number;
 
-    flag_for_carry = 1;
+    flag_for_carry = TRUE;
 
     //First adding the number after decimal.
     if( a.data_after_decimal.digits > b.data_after_decimal.digits ){
@@ -115,7 +129,7 @@ math_float floatAddition( math_float a, math_float b ){
 
     //Resetting the value of carry and flag for carry.
     carry = 0;
-    flag_for_carry = 0;
+    flag_for_carry = FALSE;
 
     return result;
 }
