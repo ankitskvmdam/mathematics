@@ -23,11 +23,12 @@ int removeLeadingZero( char *str ){
             break;
     }
 
-    /*
-        This is only true if str contains only zero. 
-        If this happens then only return 1 zero.
-    */
     if(str[i] == '\0'){
+        /*
+            This is only true if str contains only zero. 
+            If this happens then only return 1 zero.
+        */
+       
         str[k++] = '0';     //Adding zero at index 0.
         str[k] = '\0';      //Adding null charater.
         return k;           //Return new charater length.
