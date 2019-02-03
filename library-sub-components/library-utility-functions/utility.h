@@ -37,7 +37,7 @@ void addToInputStream( char c ){
 
 }
 
-void setValueToMathInt( math_int *a ){
+void setValueToMathInt( math_int *a, int remove_zero ){
     //New pointer to access data and temp to delete accessed data from memeory.
     struct input_stream *new_pointer, *temp;
 
@@ -71,10 +71,10 @@ void setValueToMathInt( math_int *a ){
     data[i] = '\0'; //Adding Null at the last of array.
     
     //Reducing the size of the digit if first input stream in - .
-    if(data[0] == '-'){
+    if( data[0] == '-' ){
         i = lengthOfInputStream = removeLeadingZero(&data[1]) - 1;
     }
-    else i = lengthOfInputStream = removeLeadingZero(data) - 1;
+    else if(remove_zero == TRUE) i = lengthOfInputStream = removeLeadingZero(data) - 1;
 
     a->data = data; //Assing data to main variable.
     a->digits = lengthOfInputStream + 1; // Assiging the number of digits.
@@ -100,7 +100,7 @@ void getMathInt( math_int *a ){
         c = getchar();          //Getting the next element.
     }
 
-    setValueToMathInt(a);       //Function to set value to the main variable.
+    setValueToMathInt(a, TRUE);       //Function to set value to the main variable.
 }
 
 //---------->>> Function to get MathFloat  <<<------------------
@@ -122,7 +122,7 @@ void getMathFloat( math_float *a ){
     }
 
     //Set before decimal.
-    setValueToMathInt( &a->data_before_decimal );
+    setValueToMathInt( &a->data_before_decimal, TRUE );
 
     //Reinitialize for data after decimal part;
     initialize();
@@ -135,7 +135,7 @@ void getMathFloat( math_float *a ){
     }
 
     //Set after decimal part.
-    setValueToMathInt( &a->data_after_decimal );
+    setValueToMathInt( &a->data_after_decimal, FALSE );
 
     //Saving the length of the floating number without decimal
     a->digits = a->data_before_decimal.digits + a->data_after_decimal.digits;

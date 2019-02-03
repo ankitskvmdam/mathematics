@@ -71,11 +71,11 @@ math_int addition( math_int a, math_int b ){
     return c;
 }
 
-//First process the integer and the perform addition
+//Preprocessor function for addition of two integers.
 math_int intAddition( math_int a, math_int b){
 
     if(a.digits > b.digits){
-
+        
         return (addition(a, b));
     }
 
@@ -85,6 +85,7 @@ math_int intAddition( math_int a, math_int b){
     }
 }
 
+//Preprocessor function for addition of two floating number
 math_float floatAddition( math_float a, math_float b ){
     math_float result;
     math_int data_before_decimal, data_after_decimal, trailing_zero_number;
@@ -103,7 +104,11 @@ math_float floatAddition( math_float a, math_float b ){
     }
 
     //Adding the number before decimal
-    data_before_decimal = intAddition( a.data_before_decimal, b.data_before_decimal );
+    if(a.data_before_decimal.digits >= b.data_before_decimal.digits)
+        data_before_decimal = intAddition( a.data_before_decimal, b.data_before_decimal );
+
+    else 
+        data_before_decimal = intAddition( b.data_before_decimal, a.data_before_decimal );
 
     //Stroing the number of digit in result.
     result.digits = data_before_decimal.digits + data_after_decimal.digits;
