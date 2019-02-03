@@ -78,7 +78,7 @@ void setValueToMathInt( math_int *a ){
 
     a->data = data; //Assing data to main variable.
     a->digits = lengthOfInputStream + 1; // Assiging the number of digits.
-    
+
 }
 
 //---------->>> Function to get MathInt  <<<------------------
@@ -172,4 +172,33 @@ math_int addTrailingZero( math_int b, int len ){
 
     //Returning the new trailing zero number.
     return trailing_zero_number;
+}
+
+
+/*
+    NOTE:
+        This function return FIRST_ONE means first parameter is greater.
+        or SECOND_ONE means second parameter is greater.
+        It return BOTH_EQUAL if both are equal.
+
+*/
+int checkGreaterInt ( math_int a, math_int b ){
+    if( a.digits > b.digits )
+        return FIRST_ONE;       //First parameter is greater.
+    else if ( a.digits < b.digits )
+        return SECOND_ONE;      //Second parameter is greater.
+
+    else{
+        int i;      //Loop control variable.
+        
+        for ( i = 0; i < a.digits; i++ ){
+            if( a.data[i] > b.data[i] )
+                return FIRST_ONE;   //We found that first parameter is greater.
+            else if( b.data[i] > a.data[i] )
+                return SECOND_ONE;  //We found that second parameter is greater.
+        }
+
+        //If nothing is return from above then it is sure that both are equal.
+        return BOTH_EQUAL;
+    }
 }

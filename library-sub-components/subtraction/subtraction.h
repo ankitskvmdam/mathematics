@@ -87,14 +87,28 @@ math_int subtraction( math_int a, math_int b){
 }
 
 math_int intSubtraction ( math_int a, math_int b){
-    if( a.digits > b.digits ){
+    int check = checkGreaterInt( a, b );
+    
+    if( check == FIRST_ONE ){
         add_negative = FALSE;
         return subtraction( a, b);
     }
 
-    else{
+    else if( check == SECOND_ONE ){
         add_negative = TRUE;
         return subtraction( b, a );
     }
+
+    else    //We know that both number are same. then just return 0;
+    {
+        math_int c;
+        c.data = allocateMemory(4);
+        c.digits = 1;
+        c.data[0] = '0';
+        c.data[1] = '\0';
+
+        return c;
+    }
+    
 }
 
