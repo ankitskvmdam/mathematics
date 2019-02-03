@@ -16,7 +16,6 @@ void reverseString( char *str, int len ){
 int removeLeadingZero( char *str ){
     int i;          //Loop control variable.
     int k = 0;      //To store new length of number.
-    char temp;      //Store current element temporarily.
 
     for( i = 0; str[i] != '\0'; i++){
         if( str[i] != '0')

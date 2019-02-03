@@ -1,6 +1,5 @@
 #include "mathematics.h"
 #include "test/test.h"
-
 int main(void){
     
     math_float a, b, c;
