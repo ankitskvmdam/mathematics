@@ -1,3 +1,5 @@
+#include "../../mathematics.h"
+
 int borrow = 0;                 //Global variable to store borrow
 int add_negative = FALSE;       //This tell subtraction function whether to add negative sign or not.
 

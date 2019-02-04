@@ -1,3 +1,4 @@
+#include "../../mathematics.h"
 int carry = 0;              //Global variable to store carry
 int flag_for_carry = FALSE;     //Global variable to say whether to add last carry or not. Useful for float addition.
 
@@ -8,7 +9,6 @@ int flag_for_carry = FALSE;     //Global variable to say whether to add last car
  */
 
 math_int addition( math_int a, math_int b ){
-    
     math_int c;         //Variable to store the final result.
     int i;              //Loop control variable.
 

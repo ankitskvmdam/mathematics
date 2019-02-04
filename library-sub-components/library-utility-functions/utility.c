@@ -1,3 +1,5 @@
+#include "../../mathematics.h"
+
 //Structure for input stream
 struct input_stream{
     char c;
