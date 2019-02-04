@@ -1,3 +1,6 @@
+# Important
+This library is not completed yet and may contain error. Work is in progress.
+
 # Mathematics
 C Library for large computations. I have created this library for the calculation of very large number in C.
 
